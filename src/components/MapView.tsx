@@ -67,7 +67,7 @@ export const MapView = forwardRef<MapViewHandle, MapViewProps>(function MapView(
     },
   }));
 
-  const { data: stations = [], isLoading } = useQuery(stationsQueryOptions(filters));
+  const { data: stations = [] } = useQuery(stationsQueryOptions(filters));
 
   stationsRef.current = stations;
 
