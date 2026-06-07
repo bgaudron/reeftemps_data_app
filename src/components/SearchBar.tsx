@@ -26,7 +26,7 @@ export function SearchBar({ onSelect }: SearchBarProps) {
   }
 
   return (
-    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-80 sm:w-96">
+    <div className="absolute top-4 z-10 left-16 right-28 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 sm:w-96">
       <Command
         shouldFilter
         className="rounded-2xl shadow-lg border border-slate-200 bg-white"
