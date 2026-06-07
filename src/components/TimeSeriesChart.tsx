@@ -93,6 +93,16 @@ export function TimeSeriesChart({ serieId, observedPropertyId }: TimeSeriesChart
     return [+(min - pad).toFixed(4), +(max + pad).toFixed(4)];
   }, [displayData, zoomDomain]);
 
+  const tickFormatter = useMemo(() => {
+    const t0 = zoomDomain?.[0] ?? displayData[0]?.time ?? 0;
+    const t1 = zoomDomain?.[1] ?? displayData[displayData.length - 1]?.time ?? 0;
+    const spanMs = t1 - t0;
+    const DAY = 86_400_000;
+    if (spanMs > 365 * DAY * 2)  return (t: number) => new Date(t).toLocaleDateString("fr-FR", { month: "short", year: "2-digit" });
+    if (spanMs > 7 * DAY)        return (t: number) => new Date(t).toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+    return                              (t: number) => new Date(t).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  }, [zoomDomain, displayData]);
+
   // ── Drag-to-zoom: direct DOM, zero re-renders during drag ─────────────────
   const wrapperRef = useRef<HTMLDivElement>(null);
   const selDivRef = useRef<HTMLDivElement>(null);
@@ -158,7 +168,7 @@ export function TimeSeriesChart({ serieId, observedPropertyId }: TimeSeriesChart
 
   if (isPending) return (
     <div className="h-56 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center gap-2">
-      <img src="/favicon.ico" className="size-4 animate-spin" alt="" />
+      <img src={`${import.meta.env.BASE_URL}favicon.ico`} className="size-4 animate-spin" alt="" />
       <span className="text-sm text-slate-400">Chargement des données…</span>
     </div>
   );
@@ -212,9 +222,7 @@ export function TimeSeriesChart({ serieId, observedPropertyId }: TimeSeriesChart
               type="number"
               domain={xDomain}
               allowDataOverflow
-              tickFormatter={(t: number) =>
-                new Date(t).toLocaleDateString("fr-FR", { month: "short", year: "2-digit" })
-              }
+              tickFormatter={tickFormatter}
               tick={{ fill: "#94a3b8", fontSize: 10 }}
               axisLine={false}
               tickLine={false}

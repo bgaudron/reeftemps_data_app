@@ -256,7 +256,7 @@ export const MapView = forwardRef<MapViewHandle, MapViewProps>(function MapView(
       <div ref={containerRef} className="w-full h-full" />
       {!clustersReady && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm text-slate-600 shadow flex items-center gap-2">
-          <img src="/favicon.ico" className="size-4 animate-spin" alt="" />
+          <img src={`${import.meta.env.BASE_URL}favicon.ico`} className="size-4 animate-spin" alt="" />
           Chargement des stations…
         </div>
       )}
